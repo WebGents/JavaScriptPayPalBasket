@@ -12,7 +12,7 @@ Minify the following script files with whatever tool you like best:
  - **/js/model/SelectOption.js**
  - **/js/functions.js**
  - **/js/headerstart.js**
-**
+
 ### Body Loading
 Minify the following script files with whatever tool you like best:
  - **/js/model/Basket.js** 
