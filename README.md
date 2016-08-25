@@ -3,7 +3,7 @@ This is a simple JavaScript basket that requires JQuery.
 The goal is simply to make a simple fast to implement basket to CMS like Joomla or Wordpress.
 
 **WARNING: since this is handled in JavaScript and uses LocalStorage to generate an order it can be _manipulated_ in the browser.**
-**So if you choose to use this, make sure that you double check every order you receive if priceses are correct.**
+**So if you choose to use this, make sure that you double check every order you receive if prices are correct.**
 
 ## Usage
 There is 2 ways of using this script, first script is loaded in the header and the second its loaded in the body, best after DOM is ready.

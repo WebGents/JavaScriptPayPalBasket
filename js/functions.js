@@ -1,3 +1,10 @@
+/*!
+ * Require jQuery to work
+ * https://jquery.com/
+ *
+ * Created by Henrik Bøgelund Lavstsen
+ * email: henrik@webgents.dk
+ */
 function main() {
 	redrawCart();
 	var Arrays=new Array();
