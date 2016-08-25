@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Testing JavaScript PayPal Basket</title>
+<meta charset="utf-8" />
+<link rel="stylesheet" type="text/css" href="style/style.css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="text/javascript" src="js/model/Basket.js"></script>
+<script type="text/javascript" src="js/model/CartItem.js"></script>
+<script type="text/javascript" src="js/model/SelectOption.js"></script>
+<script type="text/javascript" src="js/model/Price.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/headerstart.js"></script>
+</head>
+
+<body>
+    <h1>Implementation Test for JavaScript PayPal Basket</h1>
+<div id="container">
+
+
+<div class="example">
+    <h2>Single select option setting</h2>
+    <p>This example we sell Apples</p>
+    <p class="html-code"> &lt;input type=&quot;hidden&quot; name=&quot;id&quot; value=&quot;apples&quot;/&gt;<br>
+	    &lt;input type=&quot;hidden&quot; name=&quot;price_option_red-apple&quot; value=&quot;60&quot;/&gt;<br>
+	    &lt;input type=&quot;hidden&quot; name=&quot;price_option_red-apple_quantity_5&quot; value=&quot;50&quot;/&gt;<br>
+	    &lt;input type=&quot;hidden&quot; name=&quot;price_quantity_1_option_green-apple&quot; value=&quot;50&quot;/&gt;<br>
+	    &lt;input type=&quot;hidden&quot; name=&quot;label&quot; value=&quot;Apple&quot; /&gt;<br>
+	    &lt;select name=&quot;option&quot;&gt;<br>
+		    &lt;option value=&quot;red-apple&quot;&gt;Red&lt;/option&gt;<br>
+		    &lt;option value=&quot;green-apple&quot;&gt;Green&lt;/option&gt;<br>
+	    &lt;/select&gt;<br>
+	    Amount:	&lt;input type=&quot;number&quot; name=&quot;quantity&quot; value=&quot;1&quot; /&gt;<br>
+	    &lt;input type=&quot;submit&quot; name=&quot;summit&quot; value=&quot;Add to cart&quot; /&gt; </p>
+    <form class="cart-item">
+	    <input type="hidden" name="id" value="apples"/>
+	    <input type="hidden" name="price_option_red-apple" value="60"/>
+	    <input type="hidden" name="price_option_red-apple_quantity_5" value="50"/>
+	    <input type="hidden" name="price_quantity_1_option_green-apple" value="50"/>
+	    <input type="hidden" name="label" value="Apple" />
+	    <select name="option">
+		    <option value="red-apple">Red</option>
+		    <option value="green-apple">Green</option>
+	    </select>
+	    Amount:	<input type="number" name="quantity" value="1" />
+	    <input type="submit" name="summit" value="Add to cart" /> 
+</form>
+</div>
+<div class="example">
+
+
+    <h2>Item with no options</h2>
+    <form class="cart-item">
+        <input type="hidden" name="id" value="open-water-vip-package"/>
+        <input type="hidden" name="price" value="2500"/>
+        <input type="hidden" name="label" value="Open (ert) Waters VIP Package" />
+        Amount:	<input type="number" name="quantity" value="1" />
+        <input type="submit" value="Add to cart" /> 
+    </form>
+</div>
+</div>
+<input type="hidden" name="basket-empty-label" value="Basket is empty..." />
+<input type="hidden" name="business-email" value="pearldivingkohtao@gmail.com"/>
+<input type="hidden" name="business-currency" value="THB" />
+<input type="hidden" name="checkout-label" value="Make booking with PayPal" />
+<div id="cartContainer">
+
+</div>
+
+</body>
+</html>	
