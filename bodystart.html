@@ -5,72 +5,78 @@
 <meta charset="utf-8" />
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
+<link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
 
 <body>
-<div>
+    <h1>Implementation Test for JavaScript PayPal Basket</h1>
+<div id="container">
 
-<div id="wrap">
 
-<ul>
-
-<li id="1">
-
-<form class="cart-item">
-	<input type="hidden" name="id" value="open-water"/>
-	<input type="hidden" name="price_option_gold-package" value="2500"/>
-	<input type="hidden" name="price_option_gold-package_quantity_2" value="2000"/>
-	<input type="hidden" name="price_quantity_1_option_vip-package" value="4500"/>
-	<input type="hidden" name="label" value="Open Waters" />
-	<select name="option">
-		<option value="gold-package">Gold Package</option>
-		<option value="vip-package">VIP Package</option>
-	</select>
-	Amount:	<input type="number" name="quantity" value="1" />
-	<input type="submit" name="summit" value="Add to cart" /> 
+<div class="example">
+    <h2>Single select option setting</h2>
+    <p>This example we sell Apples</p>
+    <ul>
+        <li>Red apples for 60 each</li>
+        <li>+5 Red apples 50 each</li>
+        <li>Green apples 50 each</li>
+    </ul>
+    <form class="cart-item">
+	    <input type="hidden" name="id" value="apples"/>
+	    <input type="hidden" name="price_option_red-apple" value="60"/>
+	    <input type="hidden" name="price_option_red-apple_quantity_5" value="50"/>
+	    <input type="hidden" name="price_quantity_1_option_green-apple" value="50"/>
+	    <input type="hidden" name="label" value="Apple" />
+	    <select name="option">
+		    <option value="red-apple">Red</option>
+		    <option value="green-apple">Green</option>
+	    </select>
+	    Amount:	<input type="number" name="quantity" value="1" />
+	    <input type="submit" name="summit" value="Add to cart" /> 
 </form>
-<div>
-
-<span class="name">1 Person Gold Package</span>: jQuery<span class="price">2500</span></div></li>
-
-<li id="2">
-
-
-<div>
-
-<span class="name">1 Person VIP Package </span>: jQuery<span class="price">4500 </span></div></li>
-<form class="cart-item">
-	<input type="hidden" name="id" value="open-water-vip-package"/>
-	<input type="hidden" name="price" value="2500"/>
-	<input type="hidden" name="label" value="Open (ert) Waters VIP Package" />
-	Amount:	<input type="number" name="quantity" value="1" />
-	<input type="submit" value="Add to cart" /> 
-</form>
-<li id="3">
-
-<div>
-	<span class="name">2 Persons Gold Package </span>: jQuery<span class="price">2000</span></div></li>
-
 </div>
+<div class="example">
 
-</li>
-</ul>
-	<input type="hidden" name="basket-empty-label" value="Basket is empty..." />
-	<input type="hidden" name="business-email" value="bamma1985@gmail.com"/>
-	<input type="hidden" name="business-currency" value="THB" />
-	<input type="hidden" name="checkout-label" value="Make donation with PayPal" />
 
-<div id="cartContainer">
-<script type="text/javascript" src="js/model/Basket.js"></script>
+    <h2>Item with no options</h2>
+    <p>This example we sell bananas</p>
+     <ul>
+        <li>1 Banana 100 each</li>
+        <li>+5 Bananas 90 each</li>
+        <li>+10 Bananas 80 each</li>
+    </ul>
+    <form class="cart-item">
+        <input type="hidden" name="id" value="banana"/>
+        <input type="hidden" name="price" value="100"/>
+        <input type="hidden" name="price_quantity_5" value="90"/>
+        <input type="hidden" name="price_quantity_10" value="80"/>
+        <input type="hidden" name="label" value="Banana" />
+        Amount:	<input type="number" name="quantity" value="1" />
+        <input type="submit" value="Add to cart" /> 
+    </form>
+</div>
+</div>
+<div id="container">
+<div class="basket">
+    <h2>This is the Basket area</h2>
+    <p>It will dynamically generate based on what is in the local storage</p>
+    <input type="hidden" name="basket-empty-label" value="Basket is empty..." />
+    <input type="hidden" name="business-email" value="pearldivingkohtao@gmail.com"/>
+    <input type="hidden" name="business-currency" value="THB" />
+    <input type="hidden" name="checkout-label" value="Make booking with PayPal" />
+    <div id="cartContainer">
+
+    </div>
+	<script type="text/javascript" src="js/model/Basket.js"></script>
 <script type="text/javascript" src="js/model/CartItem.js"></script>
 <script type="text/javascript" src="js/model/SelectOption.js"></script>
 <script type="text/javascript" src="js/model/Price.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
 <script type="text/javascript" src="js/bodystart.js"></script>
 </div>
-
-
-
-</body>
+<div class="description">
+    <h2>Explaination</h2>
+    <p>Prices are set within the hidden inputs, so price, then system no its a price value, following price with _quantity_5 means that the value price will be from 5 quantity and up, if not anything higher. The option_[value of option] tells the price on the options themself, all this can be combined into several price points on a single item.</p>
+</div>
+</div>
 </html>	
