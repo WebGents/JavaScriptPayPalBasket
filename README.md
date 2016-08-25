@@ -23,13 +23,13 @@ Minify the following script files with whatever tool you like best:
  - **/js/bodystart.js**
 
 ### Basket setup
-´´´
+```
 <input type="hidden" name="basket-empty-label" value="Basket is empty..." />
 <input type="hidden" name="business-email" value="pearldivingkohtao@gmail.com"/>
 <input type="hidden" name="business-currency" value="THB" />
 <input type="hidden" name="checkout-label" value="Make booking with PayPal" />
 <div id="cartContainer">
 </div>
-´´´
+```
 
 ### Item setup
