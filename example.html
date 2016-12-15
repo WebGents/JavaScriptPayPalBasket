@@ -10,12 +10,12 @@
 <script type="text/javascript" src="js/model/SelectOption.js"></script>
 <script type="text/javascript" src="js/model/Price.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
-<script type="text/javascript" src="js/headerstart.js"></script>
 </head>
 
 <body>
     <h1>Implementation Test for JavaScript PayPal Basket</h1>
 <div id="container">
+   
 
 
 <div class="example">
@@ -26,12 +26,7 @@
         <li>+5 Red apples 50 each</li>
         <li>Green apples 50 each</li>
     </ul>
-    <form class="cart-item">
-	    <input type="hidden" name="id" value="apples"/>
-	    <input type="hidden" name="price_option_red-apple" value="60"/>
-	    <input type="hidden" name="price_option_red-apple_quantity_5" value="50"/>
-	    <input type="hidden" name="price_quantity_1_option_green-apple" value="50"/>
-	    <input type="hidden" name="label" value="Apple" />
+    <form id="apple-item" class="cart-item">
 	    <select name="option">
 		    <option value="red-apple">Red</option>
 		    <option value="green-apple">Green</option>
@@ -39,6 +34,31 @@
 	    Amount:	<input type="number" name="quantity" value="1" />
 	    <input type="submit" name="summit" value="Add to cart" /> 
 </form>
+<script>
+document.getElementById('apple-item').addProduct("Apple",{
+    prices:[
+    {
+        price: {
+            value:60,
+            options:["red-apple"]
+        }
+    },
+    {
+        price: {
+            value:50,
+            options:["red-apple"],
+            quantity:5
+        }
+    },
+      {
+        price: {
+            value:60,
+            options:["green-apple"]
+        }
+      }
+    ]
+});
+</script>
 </div>
 <div class="example">
 
@@ -72,6 +92,9 @@
     <div id="cartContainer">
 
     </div>
+     <script>
+      document.getElementById('cartContainer').basket();
+    </script>
 </div>
 <div class="description">
     <h2>Explaination</h2>
