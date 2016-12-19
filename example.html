@@ -26,13 +26,13 @@
         <li>+5 Red apples 50 each</li>
         <li>Green apples 50 each</li>
     </ul>
-    <form id="apple-item" class="cart-item">
-	    <select name="option">
-		    <option value="red-apple">Red</option>
-		    <option value="green-apple">Green</option>
-	    </select>
-	    Amount:	<input type="number" name="quantity" value="1" />
-	    <input type="submit" name="summit" value="Add to cart" /> 
+<form id="apple-item" class="cart-item">
+    <select name="option">
+        <option value="red-apple">Red</option>
+        <option value="green-apple">Green</option>
+    </select>
+    Amount:	<input type="number" name="quantity" value="1" />
+    <input type="submit" name="summit" value="Add to cart" /> 
 </form>
 <script>
 document.getElementById('apple-item').addProduct("Apple",{
@@ -70,30 +70,53 @@ document.getElementById('apple-item').addProduct("Apple",{
         <li>+5 Bananas 90 each</li>
         <li>+10 Bananas 80 each</li>
     </ul>
-    <form class="cart-item">
-        <input type="hidden" name="id" value="banana"/>
-        <input type="hidden" name="price" value="100"/>
-        <input type="hidden" name="price_quantity_5" value="90"/>
-        <input type="hidden" name="price_quantity_10" value="80"/>
-        <input type="hidden" name="label" value="Banana" />
+    <form id="banana-item">
         Amount:	<input type="number" name="quantity" value="1" />
         <input type="submit" value="Add to cart" /> 
     </form>
+    <script>
+        document.getElementById('banana-item').addProduct("Banana",{
+            prices:[
+            {
+                price: {
+                    value:100,
+                }
+            },
+            {
+                price: {
+                    value:90,
+                    quantity:5
+                }
+            },
+            {
+                price: {
+                    value:60,
+                    quantity:10
+                }
+            }
+            ]
+        });
+    </script>
 </div>
 </div>
 <div id="container">
 <div class="basket">
     <h2>This is the Basket area</h2>
     <p>It will dynamically generate based on what is in the local storage</p>
-    <input type="hidden" name="basket-empty-label" value="Basket is empty..." />
-    <input type="hidden" name="business-email" value="pearldivingkohtao@gmail.com"/>
-    <input type="hidden" name="business-currency" value="THB" />
-    <input type="hidden" name="checkout-label" value="Make booking with PayPal" />
     <div id="cartContainer">
 
     </div>
      <script>
-      document.getElementById('cartContainer').basket();
+      document.getElementById('cartContainer').basket({
+          email : "bamma1985@gmail.com", // Must be set
+          currency : "DKK", // optional GBP is default
+          locale  : "DK", // optional GB is default
+          checkoutLabel : "Pay now", // optional "Checkout" is default
+          emptyBasketString : "No items in basket", //optional "basket is empty..." is default
+          customAction : function(){ //optional if not set is will only execute checkout
+            alert("Do stuff before checkout");
+            checkout();
+      }});
     </script>
 </div>
 <div class="description">

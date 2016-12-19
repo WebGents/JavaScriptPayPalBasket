@@ -5,9 +5,13 @@
  * Created by Henrik Bøgelund Lavstsen
  * email: henrik@webgents.dk
  */
-var currency = undefined;
 var cartContainer = undefined;
-var epayEmail = undefined;
+var paypalEmail = undefined;
+var paypalCurrency = "GBP";
+var doCustomAction = undefined;
+var paypalLanguage = "GB";
+var basketEmptyString = "Basket is empty...";
+var paypalCheckoutLabel = "Checkout";
 function addHiddenInput(target,name, value){
 	return target.append(jQuery('<input>',{
 		'type' : 'hidden',
@@ -62,10 +66,25 @@ HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
 		setBasket(basket);
 	});
 }
-HTMLDivElement.prototype.basket = function (customAction=undefined) { 
+HTMLDivElement.prototype.basket = function (settings) { 
+	if(settings.email == undefined)
+	{
+		console.log("WARNING no email in settings, can't continue");
+		return;
+	}
+	if(settings.currency != undefined)
+		paypalCurrency = settings.currency;
+	if(settings.locale != undefined)
+		paypalLanguage = settings.locale;
+	if(settings.emptyBasketString != undefined)
+		emptyBasketString = settings.emptyBasketString;
+	if(settings.checkoutLabel != undefined)
+		paypalCheckoutLabel = settings.checkoutLabel;
+	paypalEmail = settings.email;
     cartContainer = this;
+	doCustomAction =settings.customAction;
 	redrawCart();
-		jQuery(this).on('change','#cart-amount', function () {
+	jQuery(this).on('change','#cart-amount', function () {
 		var id = jQuery(this).parents("#cart-item-container").attr("data-id");
 		var options = jQuery(this).parents("#cart-item-container").attr("data-options").split(" ");
 		var cartData =getBasket();
@@ -87,53 +106,58 @@ HTMLDivElement.prototype.basket = function (customAction=undefined) {
 		cartData.removeCartItem(id,options);
 		setBasket(cartData);
 	});
-	jQuery(this).on('click','#cart-checkout',function(event){
-    
+	jQuery(this).on('click','#cart-checkout',function(event)
+	{
 		event.preventDefault();
-	
-		var cartData =	getBasket();
-	
-		if(cartData.hasItems()){
-
-			var newForm = jQuery('<form>', {
-				'action': 'https://www.paypal.com/cgi-bin/webscr',
-				'method': 'post',
-				'target' : "_blank"
-			});
-			var email = jQuery('input:hidden[name=business-email]').val();
-			var currency = jQuery('input:hidden[name=business-currency]').val();
-			newForm = addHiddenInput(newForm,"cmd","_cart");
-			newForm = addHiddenInput(newForm,"upload","1");
-			newForm = addHiddenInput(newForm,"business",email);
-			newForm = addHiddenInput(newForm,"currency_code",currency);
-			newForm = addHiddenInput(newForm,"lc","GB");
-			newForm = addHiddenInput(newForm,"landing_page","Billing");
-			var index = 1;
-			cartData.cartItems.forEach(function(element) {
-				var label = element.label;
-				if(element.options.length>0)
-				{
-					var first = true;
-					for(var i= 0;i<element.options.length;i++){
-						var selectOptions = element.options[i];
-						label+= ' - ' + selectOptions.label;
-					}
-				}
-				newForm = addHiddenInput(newForm,'item_name_'+index,label);
-				newForm = addHiddenInput(newForm,'amount_'+index,element.getPrice().amount);
-				newForm = addHiddenInput(newForm,'quantity_'+index,element.quantity);
-				index +=1;
-			}, this);
-			newForm.hide();
-			jQuery(this).parent().append(newForm);
-			newForm.submit();
-		}
+		if(doCustomAction != undefined)
+	 		doCustomAction();
+		else
+		 	checkout();
+		
 	});	
+}
+function checkout(){
+	var cartData =	getBasket();
+
+	if(cartData.hasItems()){
+
+		var newForm = jQuery('<form>', {
+			'action': 'https://www.paypal.com/cgi-bin/webscr',
+			'method': 'post',
+			'target' : "_blank"
+		});
+		newForm = addHiddenInput(newForm,"cmd","_cart");
+		newForm = addHiddenInput(newForm,"upload","1");
+		newForm = addHiddenInput(newForm,"business",paypalEmail);
+		newForm = addHiddenInput(newForm,"currency_code",paypalCurrency);
+		newForm = addHiddenInput(newForm,"lc",paypalLanguage);
+		newForm = addHiddenInput(newForm,"landing_page","Billing");
+		var index = 1;
+		cartData.cartItems.forEach(function(element) {
+			var label = element.label;
+			if(element.options.length>0)
+			{
+				var first = true;
+				for(var i= 0;i<element.options.length;i++){
+					var selectOptions = element.options[i];
+					label+= ' - ' + selectOptions.label;
+				}
+			}
+			newForm = addHiddenInput(newForm,'item_name_'+index,label);
+			newForm = addHiddenInput(newForm,'amount_'+index,element.getPrice().amount);
+			newForm = addHiddenInput(newForm,'quantity_'+index,element.quantity);
+			index +=1;
+		}, this);
+		newForm.hide();
+		jQuery(cartContainer).parent().append(newForm);
+		newForm.submit();
+	}
 }
 function redrawCart(){
 	var container = jQuery(cartContainer)
 	container.empty();
 	var cartData =	getBasket();
+	var paypalButton = '<input id="cart-checkout" type="submit" value="'+paypalCheckoutLabel+'"';
 	if(cartData.hasItems())
 	{
 		cartData.cartItems.sort(function(a,b){
@@ -171,20 +195,15 @@ function redrawCart(){
 	}
 	else
 	{
-		var emptyString = jQuery('input:hidden[name=basket-empty-label]').val();
-		if(emptyString){
-			var emptyItem = '<p>'+emptyString+'</p>';
-			container.append(emptyItem);
-		}
+		var emptyItem = '<p>'+emptyBasketString+'</p>';
+		container.append(emptyItem);
+		paypalButton = paypalButton + ' disabled ';
 	}
 	
-	var basketTotal = '<div id="basket-total">Total: ' + cartData.getTotalPrice()+' '+ jQuery('input:hidden[name=business-currency]').val() + '</div>';
-	var checkoutLable = jQuery('input:hidden[name=checkout-label]').val();
-	if(!checkoutLable)
-		checkoutLable = 'Checkout';
+	var basketTotal = '<div id="basket-total">Total: ' + cartData.getTotalPrice()+' '+ paypalCurrency + '</div>';
 	container.append(basketTotal);
-
-	container.append('<input id="cart-checkout" type="submit" value="'+checkoutLable+'"/>');
+	paypalButton = paypalButton + '/>'
+	container.append(paypalButton);
 };
 function getBasket(){
 	var untypedObjects= JSON.parse(localStorage.getItem("junglecoder-basket"));
