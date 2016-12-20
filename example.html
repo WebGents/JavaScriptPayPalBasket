@@ -98,6 +98,20 @@ document.getElementById('apple-item').addProduct("Apple",{
         });
     </script>
 </div>
+<div class="example">
+    <h2>Fixed price example</h2>
+    <p>Selling oranges</p>
+    <ul>
+        <li>Orange 45 each</li>
+    </ul>
+<form id="orange-item" class="cart-item">
+    Amount:	<input type="number" name="quantity" value="1" />
+    <input type="submit" name="summit" value="Add to cart" /> 
+</form>
+<script>
+document.getElementById('orange-item').addProduct("Orange",10);
+</script>
+</div>
 </div>
 <div id="container">
 <div class="basket">
@@ -106,17 +120,18 @@ document.getElementById('apple-item').addProduct("Apple",{
     <div id="cartContainer">
 
     </div>
+    <button id="checkout-button" >Checkout</button>
      <script>
       document.getElementById('cartContainer').basket({
           email : "bamma1985@gmail.com", // Must be set
           currency : "DKK", // optional GBP is default
           locale  : "DK", // optional GB is default
-          checkoutLabel : "Pay now", // optional "Checkout" is default
           emptyBasketString : "No items in basket", //optional "basket is empty..." is default
           customAction : function(){ //optional if not set is will only execute checkout
             alert("Do stuff before checkout");
             checkout();
       }});
+      document.getElementById("checkout-button").checkout();
     </script>
 </div>
 <div class="description">

@@ -18,7 +18,6 @@ Look in comments in example for setup. only Email is required, rest have default
           email : "bamma1985@gmail.com", // Must be set
           currency : "DKK", // optional GBP is default
           locale  : "DK", // optional GB is default
-          checkoutLabel : "Pay now", // optional "Checkout" is default
           emptyBasketString : "No items in basket", //optional "basket is empty..." is default
           customAction : function(){ //optional if not set is will only execute checkout
             alert("Do stuff before checkout");

@@ -6,12 +6,12 @@
  * email: henrik@webgents.dk
  */
 var cartContainer = undefined;
+var checkoutButton = undefined;
 var paypalEmail = undefined;
 var paypalCurrency = "GBP";
 var doCustomAction = undefined;
 var paypalLanguage = "GB";
 var basketEmptyString = "Basket is empty...";
-var paypalCheckoutLabel = "Checkout";
 function addHiddenInput(target,name, value){
 	return target.append(jQuery('<input>',{
 		'type' : 'hidden',
@@ -20,7 +20,7 @@ function addHiddenInput(target,name, value){
 	}));
 };
 HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
-	
+	console.log(label);
 	jQuery(this).submit(function(event){
 		event.preventDefault();
 		var cartItem = new CartItem();
@@ -45,11 +45,14 @@ HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
 		}
 		if(Number.isInteger(priceOrPrices)){
 			var price = new Price();
-			price.price = priceOrPrices
-			cartItem.addPrice(price)
+			price.amount = priceOrPrices;
+			cartItem.addPrice(price);
+			console.log(priceOrPrices);
 		}
 		else
 		{
+			console.log(label);
+			console.log(priceOrPrices);
 		 	prices =	priceOrPrices["prices"]
 			for(var i = 0 ; i < prices.length; i++){
 				var jsonPrice = prices[i]
@@ -78,8 +81,6 @@ HTMLDivElement.prototype.basket = function (settings) {
 		paypalLanguage = settings.locale;
 	if(settings.emptyBasketString != undefined)
 		emptyBasketString = settings.emptyBasketString;
-	if(settings.checkoutLabel != undefined)
-		paypalCheckoutLabel = settings.checkoutLabel;
 	paypalEmail = settings.email;
     cartContainer = this;
 	doCustomAction =settings.customAction;
@@ -106,15 +107,7 @@ HTMLDivElement.prototype.basket = function (settings) {
 		cartData.removeCartItem(id,options);
 		setBasket(cartData);
 	});
-	jQuery(this).on('click','#cart-checkout',function(event)
-	{
-		event.preventDefault();
-		if(doCustomAction != undefined)
-	 		doCustomAction();
-		else
-		 	checkout();
-		
-	});	
+	
 }
 function checkout(){
 	var cartData =	getBasket();
@@ -157,7 +150,7 @@ function redrawCart(){
 	var container = jQuery(cartContainer)
 	container.empty();
 	var cartData =	getBasket();
-	var paypalButton = '<input id="cart-checkout" type="submit" value="'+paypalCheckoutLabel+'"';
+	
 	if(cartData.hasItems())
 	{
 		cartData.cartItems.sort(function(a,b){
@@ -192,19 +185,37 @@ function redrawCart(){
 				+ element.quantity+'x '+ price.amount+'</div></div><input id="remove-cart-item" type="submit" class="cart-item-remove"/ value="x"></div>';
 				container.append(cartItem);
 		}, this);
+		if(checkoutButton != undefined){
+			checkoutButton.disabled = false;
+		}
 	}
 	else
 	{
 		var emptyItem = '<p>'+emptyBasketString+'</p>';
 		container.append(emptyItem);
-		paypalButton = paypalButton + ' disabled ';
+		if(checkoutButton != undefined){
+			checkoutButton.disabled = true;
+		}
 	}
-	
 	var basketTotal = '<div id="basket-total">Total: ' + cartData.getTotalPrice()+' '+ paypalCurrency + '</div>';
 	container.append(basketTotal);
-	paypalButton = paypalButton + '/>'
-	container.append(paypalButton);
+
 };
+
+HTMLElement.prototype.checkout = function(){
+	checkoutButton = this;
+	if(!getBasket().hasItems())
+		checkoutButton.disabled = true;
+	jQuery(this).click(function(event)
+	{
+		event.preventDefault();
+		if(doCustomAction != undefined)
+	 		doCustomAction();
+		else
+		 	checkout();
+		
+	});	
+}
 function getBasket(){
 	var untypedObjects= JSON.parse(localStorage.getItem("junglecoder-basket"));
 	if(untypedObjects)
