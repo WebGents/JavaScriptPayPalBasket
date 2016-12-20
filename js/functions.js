@@ -20,8 +20,8 @@ function addHiddenInput(target,name, value){
 	}));
 };
 HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
-	console.log(label);
-	jQuery(this).submit(function(event){
+
+	jQuery(this).click(function(event){
 		event.preventDefault();
 		var cartItem = new CartItem();
 		cartItem.id = this.id;
@@ -47,12 +47,10 @@ HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
 			var price = new Price();
 			price.amount = priceOrPrices;
 			cartItem.addPrice(price);
-			console.log(priceOrPrices);
 		}
 		else
 		{
-			console.log(label);
-			console.log(priceOrPrices);
+		
 		 	prices =	priceOrPrices["prices"]
 			for(var i = 0 ; i < prices.length; i++){
 				var jsonPrice = prices[i]
@@ -63,27 +61,18 @@ HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
 				cartItem.addPrice(price);
 			}
 		}
-		console.log(cartItem);
 		var basket = getBasket();
 		basket.addCartItem(cartItem);
 		setBasket(basket);
 	});
 }
-HTMLDivElement.prototype.basket = function (settings) { 
-	if(settings.email == undefined)
-	{
-		console.log("WARNING no email in settings, can't continue");
-		return;
-	}
-	if(settings.currency != undefined)
-		paypalCurrency = settings.currency;
-	if(settings.locale != undefined)
-		paypalLanguage = settings.locale;
-	if(settings.emptyBasketString != undefined)
-		emptyBasketString = settings.emptyBasketString;
-	paypalEmail = settings.email;
+HTMLDivElement.prototype.basket = function (currency) { 
+	if(currency != undefined)
+		paypalCurrency = currency;
+	
+
     cartContainer = this;
-	doCustomAction =settings.customAction;
+	
 	redrawCart();
 	jQuery(this).on('change','#cart-amount', function () {
 		var id = jQuery(this).parents("#cart-item-container").attr("data-id");
@@ -202,10 +191,29 @@ function redrawCart(){
 
 };
 
-HTMLElement.prototype.checkout = function(){
+HTMLElement.prototype.checkout = function(settings){
+	if(settings.email == undefined)
+	{
+		console.log("WARNING no email in settings, can't continue");
+		return;
+	}
+	if(settings.email.host == undefined || settings.email.user == undefined){
+		console.log('Email must be setup as email { user : "someuser",host : "omeplace.com"}');
+		console.log("For email someuser@someplace.com");
+		console.log("can't continue checkout button");
+		this.disabled = true;
+		return;
+	}
+	paypalEmail = settings.email.user + '@' +settings.email.host;
+	if(settings.emptyBasketString != undefined)
+		emptyBasketString = settings.emptyBasketString;
+	if(settings.locale != undefined)
+		paypalLanguage = settings.locale;
 	checkoutButton = this;
+	doCustomAction =settings.customAction;
 	if(!getBasket().hasItems())
 		checkoutButton.disabled = true;
+	
 	jQuery(this).click(function(event)
 	{
 		event.preventDefault();

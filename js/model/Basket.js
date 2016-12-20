@@ -22,6 +22,15 @@ function Basket(obj){
 			this[prop] = obj[prop];
 		}
 	}
+	Basket.prototype.containsItem = function(id){
+		for(var i = 0; i < this.cartItems.length;i++){
+			var cartItem = this.cartItems[i];
+			if(cartItem.id == id){
+				return true;
+			}
+		}
+		return false;
+	}
 	Basket.prototype.addCartItem = function(cartObject){
 		var notFound = true;
 	    for(var index= 0;index < this.cartItems.length; index++)

@@ -14,15 +14,24 @@ Look in comments in example for setup. only Email is required, rest have default
     <div id="cartContainer">
     </div>
      <script>
-      document.getElementById('cartContainer').basket({
-          email : "bamma1985@gmail.com", // Must be set
-          currency : "DKK", // optional GBP is default
-          locale  : "DK", // optional GB is default
-          emptyBasketString : "No items in basket", //optional "basket is empty..." is default
-          customAction : function(){ //optional if not set is will only execute checkout
+      document.getElementById('cartContainer').basket("DKK"); // optional GBP is default   );
+    </script>
+```
+
+### Checkout Button setup
+```
+    <button id="checkout-button" >Checkout</button>
+     <script>
+      document.getElementById('cartContainer').basket("DKK"); // optional GBP is default   
+      document.getElementById("checkout-button").checkout({
+        email : {user : 'bamma1985', host : 'gmail.com'},
+        locale  : "DK", // optional GB is default
+        emptyBasketString : "No items in basket", //optional "basket is empty..." is default
+        customAction : function(){ //optional if not set is will only execute checkout
             alert("Do stuff before checkout");
             checkout();
-      }});
+        }
+      });
     </script>
 ```
 ### Item setup

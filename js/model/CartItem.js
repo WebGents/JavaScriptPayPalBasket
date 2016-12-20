@@ -8,7 +8,7 @@
 function CartItem(obj){
 	this.id = "";
 	this.label = "";
-	this.quantity=0;
+	this.quantity=1;
 	this.prices = [];
 	this.options=[];
 	for (var prop in obj) {

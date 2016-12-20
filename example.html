@@ -102,12 +102,10 @@ document.getElementById('apple-item').addProduct("Apple",{
     <h2>Fixed price example</h2>
     <p>Selling oranges</p>
     <ul>
-        <li>Orange 45 each</li>
+        <li>Orange 10 each</li>
     </ul>
-<form id="orange-item" class="cart-item">
-    Amount:	<input type="number" name="quantity" value="1" />
-    <input type="submit" name="summit" value="Add to cart" /> 
-</form>
+<form id="orange-item">
+    <button type="submit">Add 1</button></form>
 <script>
 document.getElementById('orange-item').addProduct("Orange",10);
 </script>
@@ -122,16 +120,16 @@ document.getElementById('orange-item').addProduct("Orange",10);
     </div>
     <button id="checkout-button" >Checkout</button>
      <script>
-      document.getElementById('cartContainer').basket({
-          email : "bamma1985@gmail.com", // Must be set
-          currency : "DKK", // optional GBP is default
-          locale  : "DK", // optional GB is default
-          emptyBasketString : "No items in basket", //optional "basket is empty..." is default
-          customAction : function(){ //optional if not set is will only execute checkout
+      document.getElementById('cartContainer').basket("DKK"); // optional GBP is default   
+      document.getElementById("checkout-button").checkout({
+        email : {user : 'bamma1985', host : 'gmail.com'},
+        locale  : "DK", // optional GB is default
+        emptyBasketString : "No items in basket", //optional "basket is empty..." is default
+        customAction : function(){ //optional if not set is will only execute checkout
             alert("Do stuff before checkout");
             checkout();
-      }});
-      document.getElementById("checkout-button").checkout();
+        }
+      });
     </script>
 </div>
 <div class="description">
