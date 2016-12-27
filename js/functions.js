@@ -12,6 +12,7 @@ var paypalCurrency = "GBP";
 var doCustomAction = undefined;
 var paypalLanguage = "GB";
 var basketEmptyString = "Basket is empty...";
+var basketUpdateAction = undefined;
 function addHiddenInput(target,name, value){
 	return target.append(jQuery('<input>',{
 		'type' : 'hidden',
@@ -19,8 +20,8 @@ function addHiddenInput(target,name, value){
 		'value' : value
 	}));
 };
-HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
-
+HTMLFormElement.prototype.addProduct = function(label,priceOrPrices,updateAction){
+	basketUpdateAction = updateAction;
 	jQuery(this).click(function(event){
 		event.preventDefault();
 		var cartItem = new CartItem();
@@ -64,6 +65,7 @@ HTMLFormElement.prototype.addProduct = function(label,priceOrPrices){
 		var basket = getBasket();
 		basket.addCartItem(cartItem);
 		setBasket(basket);
+		
 	});
 }
 HTMLDivElement.prototype.basket = function (currency) { 
@@ -233,6 +235,7 @@ function getBasket(){
 function setBasket(basket){
 	localStorage.setItem("junglecoder-basket",JSON.stringify(basket));
 	redrawCart();
+	if(basketUpdateAction!=null) basketUpdateAction();
 };
 
 
