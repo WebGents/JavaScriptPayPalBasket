@@ -211,7 +211,7 @@ HTMLElement.prototype.checkout = function(settings){
 		return;
 	}
 	paypalEmail = settings.email.user + '@' +settings.email.host;
-	if(settings.emptyBasketString != undefined)
+	if(typeof(settings.emptyBasketString) == 'function')
 		emptyBasketString = settings.emptyBasketString;
 	if(settings.locale != undefined)
 		paypalLanguage = settings.locale;
